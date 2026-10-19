@@ -54,11 +54,9 @@ export async function listPeople(req: Request, res: Response) {
   const filter: QueryFilter<IPerson> = { visibility: 'visible' }
 
   if (query.q) {
-    // Match from the start of a word, ignoring case: "a" finds Ali, Atif, Sana Ali ...
-    // and "ab" narrows it down. Headlines are searched from 3 letters on, so a single
-    // letter does not match every "actor" or "and".
-    const wordStart = new RegExp(`(^|[\\s\\-.'])${escapeRegex(query.q)}`, 'i')
-    filter.$or = query.q.length >= 3 ? [{ name: wordStart }, { headline: wordStart }] : [{ name: wordStart }]
+    // Names only, from the start of a word, ignoring case: "ham" finds Hamdullah but
+    // not Mohamed or Chamberlain. Any word counts, so "khan" also finds Mahira Khan.
+    filter.name = new RegExp(`(^|[\\s\\-.'])${escapeRegex(query.q)}`, 'i')
   }
 
   // Taxonomy slugs ko ids mein badlo. Ghalat slug = koi result nahi
