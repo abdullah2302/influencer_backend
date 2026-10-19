@@ -397,6 +397,8 @@ The backend runs on Vercel as a serverless function (Vercel uses the app exporte
 
 `NODE_ENV`, `CLIENT_URL` (comma separated for several frontends), `MONGO_URI`, `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET` (see `.env.example`).
 
+For **Sign in / Sign up with Google** set `GOOGLE_CLIENT_ID`: in Google Cloud Console open *APIs & Services → Credentials → Create credentials → OAuth client ID*, choose *Web application*, and add the frontend domain (for example `https://influencer-frontend-kappa.vercel.app`) under *Authorized JavaScript origins*. The client ID is public (not a secret). Without it the Google buttons are simply hidden. Endpoints: `GET /api/auth/google/config`, `POST /api/auth/google/login` and `POST /api/auth/google/register` (same fields as `/register`, minus email and password).
+
 For password reset emails also set `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` and `MAIL_FROM`. With Gmail use `smtp.gmail.com`, port `587` and a Google **App Password** (not the normal Gmail password). Without `SMTP_HOST` the code is printed in the server terminal in development, and production answers 503 `EMAIL_NOT_CONFIGURED`.
 
 ## Admin panel API (admin only)

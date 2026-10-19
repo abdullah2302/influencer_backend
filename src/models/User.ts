@@ -13,6 +13,8 @@ export interface IUser {
   status: 'active' | 'suspended'
   // Apni photo (talent / manager / admin) ya logo (business). /api/uploads/... ya khali
   avatarUrl?: string
+  // Google se login (Google account ka 'sub' id)
+  googleId?: string
   // Business signup pe di gayi company details. Tasdeeq ka form inhi se shuru hota hai
   // (wahan website, mulk waghera bhi chahiye). Asal record BusinessProfile hai
   company?: {
@@ -58,6 +60,7 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
     password: { type: String, required: true, select: false },
     role: { type: String, enum: ROLES, required: true },
     isEmailVerified: { type: Boolean, default: false },
+    googleId: { type: String, unique: true, sparse: true, select: false },
     status: { type: String, enum: ['active', 'suspended'], default: 'active' },
     avatarUrl: { type: String, trim: true },
     company: {
@@ -94,6 +97,7 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
       transform: (_doc, ret: Record<string, unknown>) => {
         delete ret.password
         delete ret.tokenVersion
+        delete ret.googleId
         delete ret.__v
         return ret
       },
