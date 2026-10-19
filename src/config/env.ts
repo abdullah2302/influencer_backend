@@ -26,7 +26,8 @@ export const env = {
   smtpPass: process.env.SMTP_PASS || '',
   mailFrom: process.env.MAIL_FROM || '',
   // "Sign in with Google": Google Cloud Console ka OAuth Web client ID (public hai, secret nahi)
-  googleClientId: process.env.GOOGLE_CLIENT_ID || '',
+  // (VITE_GOOGLE_CLIENT_ID bhi chalega: aksar wahi naam dono projects mein daal diya jata hai)
+  googleClientId: (process.env.GOOGLE_CLIENT_ID || process.env.VITE_GOOGLE_CLIENT_ID || '').trim(),
 }
 
 export const isProduction = env.nodeEnv === 'production'
